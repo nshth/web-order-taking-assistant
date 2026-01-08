@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Order_Item;
+use App\Models\OrderItems;
 use App\Enum\ProductStatusEnum;
 
 class Product extends Model
@@ -16,7 +16,7 @@ class Product extends Model
 
     public function orderItems()
     {
-        return $this->hasMany(Order_Item::class);
+        return $this->hasMany(OrderItems::class);
     }
 
     public function getStatusAttribute(): ProductStatusEnum

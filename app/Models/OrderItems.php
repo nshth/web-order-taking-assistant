@@ -4,15 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Order;
-use App\Models\Product;
 
-class Order_Item extends Model
+class OrderItems extends Model
 {
-    /** @use HasFactory<\Database\Factories\OrderItemFactory> */
+    /** @use HasFactory<\Database\Factories\OrderItemsFactory> */
     use HasFactory;
-
-    protected $guarded = [];
+        protected $guarded = [];
 
     public function product()
     {

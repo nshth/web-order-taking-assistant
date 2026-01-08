@@ -9,6 +9,8 @@ use Filament\Tables\Table;
 use App\Enum\ProductStatusEnum;
 use App\Filament\Resources\Products\ProductResource;
 use App\Models\Product;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Columns\SelectColumn;
@@ -44,7 +46,9 @@ class ProductsTable
                 //
             ])
             ->recordActions([
+                ViewAction::make(),
                 EditAction::make(),
+                DeleteAction::make(),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

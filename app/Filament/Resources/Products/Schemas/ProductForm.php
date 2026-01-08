@@ -6,7 +6,7 @@ use Filament\Schemas\Schema;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\ModalTableSelect;
-use App\Enum\ProductStatusEnum;
+use Filament\Tables\Columns\ToggleColumn;
 
 class ProductForm
 {
@@ -25,9 +25,9 @@ class ProductForm
                 TextInput::make('stock')
                     ->required()
                     ->numeric(),
-                // Radio::make('status')
-                //     ->options(ProductStatusEnum::class)
-                //     ->required(),
+                TextInput::make('description')
+                    ->required()
+                    ->maxLength(100),
                 // ModalTableSelect::make('category_id')
                 //     ->relationship('category', 'name')
                 //     ->tableConfiguration(CategoriesTable::class)

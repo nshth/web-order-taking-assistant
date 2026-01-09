@@ -18,8 +18,9 @@ class OrderFactory extends Factory
     public function definition(): array
     {
         return [
-            'total' => fake()->randomNumber(5),
-            'customer_id' => Customer::factory()
+            'total' => 0,
+            'customer_id' => Customer::factory(),
+            'status' => fake()->randomElement(['Confirmed', 'Received', 'Returned', 'Pending'])
         ];
     }
 }

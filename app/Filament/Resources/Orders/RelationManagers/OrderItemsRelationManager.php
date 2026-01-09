@@ -10,9 +10,11 @@ use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\DissociateAction;
 use Filament\Actions\DissociateBulkAction;
 use Filament\Actions\EditAction;
-use Filament\Forms\Components\TextInput;
+// use Filament\Forms\Components\TextColumn;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Schemas\Schema;
+use Filament\Tables\Columns\Summarizers\Sum;
+use Filament\Tables\Columns\Summarizers\Summarizer;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
@@ -24,20 +26,7 @@ class OrderItemsRelationManager extends RelationManager
     {
         return $schema
             ->components([
-                TextInput::make('product.name')
-                    ->required(),
-                TextInput::make('quantity')
-                    ->required()
-                    ->numeric(),
-                TextInput::make('price')
-                    ->required()
-                    ->numeric()
-                    ->prefix('$'),
-                TextInput::make('order.total')
-                    ->required()
-                    ->numeric()
-                    ->prefix('$'),
-                TextInput::make('customer.name')                
+                              
             ]);
     }
 
@@ -46,23 +35,35 @@ class OrderItemsRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('product_id')
             ->columns([
-                TextColumn::make('product_id')
-                    ->numeric()
-                    ->sortable(),
+                TextColumn::make('product.name')
+                    ->label('Product')
+                    ->sortable()
+                    ->searchable(),
+                    
                 TextColumn::make('quantity')
                     ->numeric()
                     ->sortable(),
+                    
                 TextColumn::make('price')
-                    ->money()
+                    ->prefix('$')
                     ->sortable(),
-                TextColumn::make('created_at')
-                    ->dateTime()
+                    
+                // nested relationship
+                TextColumn::make('order.customer.name')
+                    ->label('Customer')
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->searchable(),
+                    
+                TextColumn::make('line_total')
+                    ->label('Sub Total')
+                    ->getStateUsing(fn ($record) => $record->price * $record->quantity)
+                    ->money('USD')
+                    ->summarize(
+                        Summarizer::make()
+                            ->label('Order Total')
+                            ->using(fn ($query) => $query->get()->sum(fn ($record) => $record->price * $record->quantity))
+                            ->money('USD')
+                    ),
             ])
             ->filters([
                 //

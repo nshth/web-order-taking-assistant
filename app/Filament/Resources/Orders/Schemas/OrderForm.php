@@ -11,11 +11,7 @@ class OrderForm
     {
         return $schema
             ->components([
-                TextInput::make('total')
-                    ->required(),
-                TextInput::make('customer_id')
-                    ->required()
-                    ->numeric(),
+                //
             ]);
     }
 }

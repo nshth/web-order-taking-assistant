@@ -30,12 +30,7 @@ class ProductsTable
                     ->sortable(),
                 ToggleColumn::make('is_active'),
                 TextColumn::make('status')
-                    ->badge()
-                    ->color(fn (ProductStatusEnum $state): string => match ($state) {
-                        ProductStatusEnum::IN_STOCK => 'success',
-                        ProductStatusEnum::LOW_STOCK => 'warning',
-                        ProductStatusEnum::SOLD_OUT => 'danger',
-                    }),
+                    ->badge(),
                 TextColumn::make('created_at')
                     // ->dateTime('d-m-y H:i')
                     // ->date('Y-M-D')

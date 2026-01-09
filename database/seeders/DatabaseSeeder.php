@@ -29,7 +29,16 @@ class DatabaseSeeder extends Seeder
 
         Product::factory(20)->create();
         Customer::factory(15)->create();
-        Order::factory(15)->create();
-        OrderItems::factory(15)->create();
+        $orders = Order::factory(15)->create();
+    
+        // Create items for each order
+        foreach ($orders as $order) {
+            OrderItems::factory(rand(2, 5))->create([
+                'order_id' => $order->id,
+            ]);
+            
+            // Calculate total
+            $order->calculateTotal();
+        }        
     }
 }

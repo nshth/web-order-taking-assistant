@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Orders\RelationManagers;
 
+use App\Filament\Resources\Customers\CustomerResource;
 use Filament\Actions\AssociateAction;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\CreateAction;
@@ -52,7 +53,12 @@ class OrderItemsRelationManager extends RelationManager
                 TextColumn::make('order.customer.name')
                     ->label('Customer')
                     ->sortable()
-                    ->searchable(),
+                    ->searchable()
+                    ->url(fn ($record) =>
+                        CustomerResource::getUrl('view', [
+                            'record' => $record->order->customer,
+                        ]),
+                    ),
                     
                 TextColumn::make('line_total')
                     ->label('Sub Total')

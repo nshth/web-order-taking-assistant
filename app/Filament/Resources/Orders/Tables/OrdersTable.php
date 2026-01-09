@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Orders\Tables;
 
 use App\Enum\ProductStatusEnum;
+use App\Filament\Resources\Customers\CustomerResource;
 use App\Filament\Resources\Orders\OrderResource;
 use App\Models\Order;
 use Filament\Actions\BulkActionGroup;
@@ -24,7 +25,11 @@ class OrdersTable
                     // ->url(fn (Order $record): string => OrderResource::getUrl('order', ['record' => $record])),
                 TextColumn::make('customer.name')
                     ->sortable()
-                    ->searchable(isIndividual: true, isGlobal: false),
+                    ->searchable(isIndividual: true, isGlobal: false)
+                    ->url(fn (Order $record): string => 
+                        CustomerResource::getUrl('view', [
+                            'record' => $record
+                        ])),
                 TextColumn::make('status')
                     ->badge(),                
             ])

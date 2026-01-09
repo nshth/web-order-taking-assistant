@@ -1,0 +1,86 @@
+<?php
+
+namespace App\Filament\Resources\Orders\RelationManagers;
+
+use Filament\Actions\AssociateAction;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\CreateAction;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\DissociateAction;
+use Filament\Actions\DissociateBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Forms\Components\TextInput;
+use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Schemas\Schema;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Table;
+
+class OrderItemsRelationManager extends RelationManager
+{
+    protected static string $relationship = 'orderItems';
+
+    public function form(Schema $schema): Schema
+    {
+        return $schema
+            ->components([
+                TextInput::make('product.name')
+                    ->required(),
+                TextInput::make('quantity')
+                    ->required()
+                    ->numeric(),
+                TextInput::make('price')
+                    ->required()
+                    ->numeric()
+                    ->prefix('$'),
+                TextInput::make('order.total')
+                    ->required()
+                    ->numeric()
+                    ->prefix('$'),
+                TextInput::make('customer.name')                
+            ]);
+    }
+
+    public function table(Table $table): Table
+    {
+        return $table
+            ->recordTitleAttribute('product_id')
+            ->columns([
+                TextColumn::make('product_id')
+                    ->numeric()
+                    ->sortable(),
+                TextColumn::make('quantity')
+                    ->numeric()
+                    ->sortable(),
+                TextColumn::make('price')
+                    ->money()
+                    ->sortable(),
+                TextColumn::make('created_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('updated_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+            ])
+            ->filters([
+                //
+            ])
+            ->headerActions([
+                CreateAction::make(),
+                AssociateAction::make(),
+            ])
+            ->recordActions([
+                EditAction::make(),
+                DissociateAction::make(),
+                DeleteAction::make(),
+            ])
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DissociateBulkAction::make(),
+                    DeleteBulkAction::make(),
+                ]),
+            ]);
+    }
+}
